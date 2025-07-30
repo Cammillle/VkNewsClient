@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.vknewsclient.ui.theme.MainScreen
 import com.example.vknewsclient.ui.theme.PostCard
 import com.example.vknewsclient.ui.theme.VkNewsClientTheme
 
@@ -24,14 +25,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             VkNewsClientTheme {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.background)
-                        .padding(10.dp)
-                ) {
-                    PostCard()
-                }
+                MainScreen()
             }
         }
     }
