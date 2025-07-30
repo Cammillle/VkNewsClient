@@ -26,41 +26,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 
 @Preview(showBackground = true)
 @Composable
 fun MainScreen() {
-    val snackbarHostState = SnackbarHostState()
-    val scope = rememberCoroutineScope()
-    val fabIsVisible = remember {
-        mutableStateOf(true)
-    }
 
     Scaffold(
-        snackbarHost = {
-            SnackbarHost(
-                hostState = snackbarHostState
-            )
-        }, floatingActionButton = {
-            if (fabIsVisible.value) {
-                FloatingActionButton(
-                    onClick = {
-                        scope.launch {
-                            val action = snackbarHostState.showSnackbar(
-                                message = "This is snackbar",
-                                actionLabel = "Hide FAB",
-                                duration = SnackbarDuration.Long
-                            )
-                            if (action == SnackbarResult.ActionPerformed) {
-                                fabIsVisible.value = false
-                            }
-                        }
-                    }) {
-                    Icon(Icons.Filled.Favorite, contentDescription = null)
-                }
-            }
-        }, bottomBar = {
+        bottomBar = {
             NavigationBar {
                 Log.d("TEST", "NavigationBar")
 
@@ -88,6 +62,10 @@ fun MainScreen() {
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize()
-        ) { }
+        ) {
+            PostCard(
+                modifier = Modifier.padding(8.dp)
+            )
+        }
     }
 }

@@ -24,13 +24,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.vknewsclient.R
+import com.example.vknewsclient.domain.StatisticItem
+import com.example.vknewsclient.domain.StatisticType
 
 @Composable
-fun PostCard() {
-    Card {
+fun PostCard(
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier
+    ) {
         Column(
             modifier = Modifier.padding(8.dp)
         ) {
@@ -39,7 +44,9 @@ fun PostCard() {
             Text(text = stringResource(R.string.template_text))
             Spacer(modifier = Modifier.height(8.dp))
             Image(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
                 painter = painterResource(R.drawable.post_content_image),
                 contentDescription = null,
                 contentScale = ContentScale.FillWidth
@@ -88,22 +95,40 @@ private fun PostHeader() {
 }
 
 @Composable
-private fun Statistics() {
-    Row{
+private fun Statistics(
+    statistics: List<StatisticItem>
+) {
+    Row {
         Row(
             modifier = Modifier.weight(1f)
         ) {
-            IconWithText(iconResId = R.drawable.ic_views_count, text = "966")
+            val viewsItem = statistics.getItemByType(StatisticType.VIEWS)
+            IconWithText(
+                iconResId = R.drawable.ic_views_count, text = viewsItem.count.toString()
+            )
         }
         Row(
             modifier = Modifier.weight(1f),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            IconWithText(iconResId = R.drawable.ic_share, text = "7")
-            IconWithText(iconResId = R.drawable.ic_comment, text = "8")
-            IconWithText(iconResId = R.drawable.ic_like, text = "27")
+            val sharesItem = statistics.getItemByType(StatisticType.SHARES)
+            IconWithText(
+                iconResId = R.drawable.ic_views_count, text = sharesItem.count.toString()
+            )
+            val commentItem = statistics.getItemByType(StatisticType.COMMENTS)
+            IconWithText(
+                iconResId = R.drawable.ic_views_count, text = commentItem.count.toString()
+            )
+            val likesItem = statistics.getItemByType(StatisticType.LIKES)
+            IconWithText(
+                iconResId = R.drawable.ic_views_count, text = likesItem.count.toString()
+            )
         }
     }
+}
+
+private fun List<StatisticItem>.getItemByType(type: StatisticType): StatisticItem {
+    return this.find { it.type == type } ?: throw IllegalStateException()
 }
 
 @Composable
@@ -123,22 +148,22 @@ private fun IconWithText(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewDarkPostCard() {
-    VkNewsClientTheme(
-        darkTheme = true
-    ) {
-        PostCard()
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewLightPostCard() {
-    VkNewsClientTheme(
-        darkTheme = false
-    ) {
-        PostCard()
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewDarkPostCard() {
+//    VkNewsClientTheme(
+//        darkTheme = true
+//    ) {
+//        PostCard()
+//    }
+//}
+//
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewLightPostCard() {
+//    VkNewsClientTheme(
+//        darkTheme = false
+//    ) {
+//        PostCard()
+//    }
+//}
