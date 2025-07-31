@@ -24,14 +24,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.vknewsclient.R
+import com.example.vknewsclient.domain.FeedPost
 import com.example.vknewsclient.domain.StatisticItem
 import com.example.vknewsclient.domain.StatisticType
 
 @Composable
 fun PostCard(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    feedPost: FeedPost
 ) {
     Card(
         modifier = modifier
@@ -39,26 +42,28 @@ fun PostCard(
         Column(
             modifier = Modifier.padding(8.dp)
         ) {
-            PostHeader()
+            PostHeader(feedPost)
             Spacer(modifier = Modifier.height(8.dp))
-            Text(text = stringResource(R.string.template_text))
+            Text(text = feedPost.contentText)
             Spacer(modifier = Modifier.height(8.dp))
             Image(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp),
-                painter = painterResource(R.drawable.post_content_image),
+                painter = painterResource(id = feedPost.contentImageResId),
                 contentDescription = null,
                 contentScale = ContentScale.FillWidth
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Statistics()
+            Statistics(statistics = feedPost.statistics)
         }
     }
 }
 
 @Composable
-private fun PostHeader() {
+private fun PostHeader(
+    feedPost: FeedPost
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -69,7 +74,7 @@ private fun PostHeader() {
             modifier = Modifier
                 .size(50.dp)
                 .clip(CircleShape),
-            painter = painterResource(R.drawable.post_comunity_thumbnail),
+            painter = painterResource(id = feedPost.avatarResId),
             contentDescription = null
         )
         Spacer(modifier = Modifier.width(8.dp))
@@ -77,12 +82,12 @@ private fun PostHeader() {
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                text = "/dev/null",
+                text = feedPost.communityName,
                 //color = MaterialTheme.colorScheme.onPrimary
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = "14:00",
+                text = feedPost.publicationDate,
                 //color = MaterialTheme.colorScheme.onSecondary
             )
         }
@@ -113,15 +118,15 @@ private fun Statistics(
         ) {
             val sharesItem = statistics.getItemByType(StatisticType.SHARES)
             IconWithText(
-                iconResId = R.drawable.ic_views_count, text = sharesItem.count.toString()
+                iconResId = R.drawable.ic_share, text = sharesItem.count.toString()
             )
             val commentItem = statistics.getItemByType(StatisticType.COMMENTS)
             IconWithText(
-                iconResId = R.drawable.ic_views_count, text = commentItem.count.toString()
+                iconResId = R.drawable.ic_comment, text = commentItem.count.toString()
             )
             val likesItem = statistics.getItemByType(StatisticType.LIKES)
             IconWithText(
-                iconResId = R.drawable.ic_views_count, text = likesItem.count.toString()
+                iconResId = R.drawable.ic_like, text = likesItem.count.toString()
             )
         }
     }
@@ -148,22 +153,3 @@ private fun IconWithText(
     }
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewDarkPostCard() {
-//    VkNewsClientTheme(
-//        darkTheme = true
-//    ) {
-//        PostCard()
-//    }
-//}
-//
-//@Preview(showBackground = true)
-//@Composable
-//fun PreviewLightPostCard() {
-//    VkNewsClientTheme(
-//        darkTheme = false
-//    ) {
-//        PostCard()
-//    }
-//}
