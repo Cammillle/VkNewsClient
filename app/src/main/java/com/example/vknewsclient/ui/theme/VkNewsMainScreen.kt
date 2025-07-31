@@ -10,7 +10,11 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxState
+import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
@@ -57,27 +61,34 @@ fun MainScreen(
             modifier = Modifier.padding(paddingValues)
         ) {
             items(
-                feedPosts.value,
-                key = { it.id }
-            ) { feedPost ->
-                PostCard(
-                    modifier = Modifier.padding(8.dp),
-                    feedPost = feedPost,
-                    onCommentClickListener = { statisticItem ->
-                        viewModel.updateCount(feedPost, statisticItem)
-                    },
-                    onLikeClickListener = { statisticItem ->
-                        viewModel.updateCount(feedPost, statisticItem)
-                    },
-                    onShareClickListener = { statisticItem ->
-                        viewModel.updateCount(feedPost, statisticItem)
-                    },
-                    onViewsClickListener = { statisticItem ->
-                        viewModel.updateCount(feedPost, statisticItem)
-                    }
-                )
+                feedPosts.value, key = { it.id }) { feedPost ->
+                val swipeToDismissBoxState = rememberSwipeToDismissBoxState(
+                    confirmValueChange = {
+                        if (it == SwipeToDismissBoxValue.EndToStart) viewModel.remove(feedPost)
+                        it != SwipeToDismissBoxValue.StartToEnd
+                    })
+                SwipeToDismissBox(
+                    modifier = Modifier.animateItem(),
+                    state = swipeToDismissBoxState,
+                    enableDismissFromStartToEnd = false,
+                    backgroundContent = {}) {
+                    PostCard(
+                        modifier = Modifier.padding(8.dp),
+                        feedPost = feedPost,
+                        onCommentClickListener = { statisticItem ->
+                            viewModel.updateCount(feedPost, statisticItem)
+                        },
+                        onLikeClickListener = { statisticItem ->
+                            viewModel.updateCount(feedPost, statisticItem)
+                        },
+                        onShareClickListener = { statisticItem ->
+                            viewModel.updateCount(feedPost, statisticItem)
+                        },
+                        onViewsClickListener = { statisticItem ->
+                            viewModel.updateCount(feedPost, statisticItem)
+                        })
+                }
             }
         }
     }
-
 }
