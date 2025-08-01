@@ -1,5 +1,6 @@
 package com.example.vknewsclient.navigation
 
+
 sealed class Screen(
     val route: String
 ) {
@@ -13,3 +14,4 @@ sealed class Screen(
         private const val ROUTE_PROFILE = "profile"
     }
 }
+

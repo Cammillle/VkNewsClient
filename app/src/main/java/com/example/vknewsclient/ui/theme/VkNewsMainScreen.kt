@@ -1,7 +1,5 @@
 package com.example.vknewsclient.ui.theme
 
-import android.util.Log
-
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -11,29 +9,32 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.example.vknewsclient.MainViewModel
+import com.example.vknewsclient.navigation.AppNavGraph
 
 @Composable
 fun MainScreen(
     viewModel: MainViewModel
 ) {
-    val selectedNavItem by viewModel.selectedNavItem.observeAsState(NavigationItem.Home)
+    val navHostController = rememberNavController()
 
     Scaffold(
         bottomBar = {
             NavigationBar {
-                Log.d("TEST", "NavigationBar")
-
+                val navBackStackEntry by navHostController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
                 val items = listOf(
-                    NavigationItem.Home, NavigationItem.Favourite, NavigationItem.Profile
+                    NavigationItem.Home,
+                    NavigationItem.Favourite,
+                    NavigationItem.Profile
                 )
                 items.forEach { item ->
                     NavigationBarItem(
-                        selected = selectedNavItem == item,
-                        onClick = { viewModel.selectNavItem(item) },
+                        selected = currentRoute == item.screen.route,
+                        onClick = { navHostController.navigate(item.screen.route) },
                         icon = { Icon(item.icon, contentDescription = null) },
                         label = { Text(text = stringResource(item.titleResId)) },
                         colors = NavigationBarItemDefaults.colors(
@@ -44,12 +45,19 @@ fun MainScreen(
                 }
             }
         }) { paddingValues ->
-        when (selectedNavItem) {
-            NavigationItem.Home -> {
-                HomeScreen(viewModel, paddingValues)
-            }
-            NavigationItem.Profile -> Text("Profile", color = Color.Black)
-            NavigationItem.Favourite -> Text("Favourite", color = Color.Black)
-        }
+
+        AppNavGraph(
+            navHostController = navHostController,
+            homeScreenContent = {
+                HomeScreen(
+                    viewModel = viewModel,
+                    paddingValues = paddingValues
+                )
+            },
+            favouriteScreenContent = { Text("Favourite") },
+            profileScreenContent = { Text("Profile") }
+        )
+
+
     }
 }
