@@ -26,6 +26,5 @@ fun AppNavGraph(
         composable(Screen.Profile.route) {
             profileScreenContent()
         }
-
     }
 }
