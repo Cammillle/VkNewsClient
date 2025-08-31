@@ -3,16 +3,9 @@ package com.example.vknewsclient.ui.theme
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -25,18 +18,19 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.vknewsclient.MainViewModel
 import com.example.vknewsclient.navigation.AppNavGraph
-import com.example.vknewsclient.navigation.Screen
+import com.example.vknewsclient.navigation.NavigationState
+import com.example.vknewsclient.navigation.rememberNavigationState
+
 
 @Composable
 fun MainScreen(
     viewModel: MainViewModel
 ) {
-    val navHostController = rememberNavController()
-
+    val navigationState = rememberNavigationState()
     Scaffold(
         bottomBar = {
             NavigationBar {
-                val navBackStackEntry by navHostController.currentBackStackEntryAsState()
+                val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
                 val items = listOf(
                     NavigationItem.Home,
@@ -47,13 +41,7 @@ fun MainScreen(
                     NavigationBarItem(
                         selected = currentRoute == item.screen.route,
                         onClick = {
-                            navHostController.navigate(item.screen.route) {
-                                popUpTo(Screen.NewsFeed.route) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
+                            navigationState.navigateTo(item.screen.route)
                         },
                         icon = { Icon(item.icon, contentDescription = null) },
                         label = { Text(text = stringResource(item.titleResId)) },
@@ -67,7 +55,7 @@ fun MainScreen(
         }) { paddingValues ->
 
         AppNavGraph(
-            navHostController = navHostController,
+            navHostController = navigationState.navHostController,
             homeScreenContent = {
                 HomeScreen(
                     viewModel = viewModel,
@@ -87,7 +75,7 @@ fun MainScreen(
 @Composable
 private fun TextCounter(name: String, paddingValues: PaddingValues) {
     var count by rememberSaveable {
-        mutableIntStateOf(0)
+        mutableStateOf(0)
     }
 
     Text(
