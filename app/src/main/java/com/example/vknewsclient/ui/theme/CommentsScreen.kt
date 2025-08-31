@@ -33,39 +33,30 @@ import androidx.compose.ui.unit.sp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommentsScreen(
-    feedPost: FeedPost,
-    comments: List<PostComment>
+    feedPost: FeedPost, comments: List<PostComment>, onBackPressed: () -> Unit
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(text = "Comments for FeedPost Id: ${feedPost.id}")
-                },
-                navigationIcon = {
-                    IconButton(onClick = {}) {
-                        Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = null
-                        )
-                    }
+            TopAppBar(title = {
+                Text(text = "Comments for FeedPost Id: ${feedPost.id}")
+            }, navigationIcon = {
+                IconButton(
+                    onClick = {
+                        onBackPressed()
+                    }) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack, contentDescription = null
+                    )
                 }
-            )
-        }
-    ) { paddingValues ->
+            })
+        }) { paddingValues ->
         LazyColumn(
-            modifier = Modifier.padding(paddingValues),
-            contentPadding = PaddingValues(
-                top = 16.dp,
-                start = 8.dp,
-                end = 8.dp,
-                bottom = 72.dp
+            modifier = Modifier.padding(paddingValues), contentPadding = PaddingValues(
+                top = 16.dp, start = 8.dp, end = 8.dp, bottom = 72.dp
             )
         ) {
             items(
-                items = comments,
-                key = { it.id }
-            ) { comment ->
+                items = comments, key = { it.id }) { comment ->
                 CommentItem(comment = comment)
             }
         }
@@ -89,18 +80,15 @@ private fun CommentItem(
         Spacer(modifier = Modifier.width(8.dp))
         Column {
             Text(
-                text = "${comment.authorName} CommentId: ${comment.id}",
-                fontSize = 12.sp
+                text = "${comment.authorName} Comment Id: ${comment.id}", fontSize = 12.sp
             )
             Spacer(Modifier.height(4.dp))
             Text(
-                text = "${comment.commentText}",
-                fontSize = 14.sp
+                text = "${comment.commentText}", fontSize = 14.sp
             )
             Spacer(Modifier.height(4.dp))
             Text(
-                text = "${comment.publicationDate}",
-                fontSize = 12.sp
+                text = "${comment.publicationDate}", fontSize = 12.sp
             )
         }
     }
