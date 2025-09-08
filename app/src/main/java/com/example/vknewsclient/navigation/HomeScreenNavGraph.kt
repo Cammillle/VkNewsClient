@@ -26,11 +26,21 @@ fun NavGraphBuilder.homeScreenNavGraph(
             arguments = listOf(
                 navArgument(Screen.KEY_FEED_POST_ID) {
                     type = NavType.IntType
+                },
+                navArgument(Screen.KEY_FEED_POST_CONTENT_TEXT) {
+                    type = NavType.StringType
                 }
             )
-        ) {                   //comments/{feed_post_id}
+        ) {                   //comments/{feed_post_id}/{feed_post_content_text}
             val feedPostId = it.arguments?.getInt(Screen.KEY_FEED_POST_ID) ?: 0
-            commentsScreenContent(FeedPost(id = feedPostId))
+            val feedPostContentText =
+                it.arguments?.getString(Screen.KEY_FEED_POST_CONTENT_TEXT) ?: ""
+            commentsScreenContent(
+                FeedPost(
+                    id = feedPostId,
+                    contentText = feedPostContentText
+                )
+            )
         }
     }
 }
