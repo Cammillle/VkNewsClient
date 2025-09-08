@@ -13,8 +13,8 @@ sealed class Screen(
         private const val ROUTE_FOR_ARGS = "comments"
 
         fun getRouteWithArgs(feedPost: FeedPost): String {
-            val feedPostJson = Gson().toJson(feedPost).encode()
-            return "$ROUTE_FOR_ARGS/$feedPostJson"
+            val feedPostJson = Gson().toJson(feedPost)
+            return "$ROUTE_FOR_ARGS/${feedPostJson.encode()}"
         }
     }
 
