@@ -48,6 +48,9 @@ dependencies {
     //ViewModelCompose
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
+    //Gson
+    implementation (libs.gson)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
