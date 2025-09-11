@@ -26,10 +26,7 @@ fun NavGraphBuilder.homeScreenNavGraph(
                     type = FeedPost.NavigationType
                 }
             )
-        ) {    //comments/{feed_post_id}/{feed_post_content_text}
-            //val feedPostId = it.arguments?.getInt(Screen.KEY_FEED_POST_ID) ?: 0
-//            val feedPostContentText =
-//                it.arguments?.getString(Screen.KEY_FEED_POST_CONTENT_TEXT) ?: ""
+        ) {    //comments/{feed_post_id}
             val feedPost = it.arguments?.getParcelable<FeedPost>(Screen.KEY_FEED_POST)
                 ?: throw RuntimeException("Args is null")
             commentsScreenContent(feedPost)
