@@ -41,6 +41,9 @@ android {
 }
 
 dependencies {
+    //Coil
+    implementation("io.coil-kt:coil-compose:2.1.0")
+
     implementation(libs.androidx.runtime.livedata)
 
     //Jetpack Compose Navigation
