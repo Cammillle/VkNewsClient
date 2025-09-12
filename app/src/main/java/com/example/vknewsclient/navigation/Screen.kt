@@ -9,12 +9,12 @@ sealed class Screen(
 ) {
     object Home : Screen(ROUTE_HOME)  /*вложенный граф навигации, в котором будет 2 экрана*/
 
-    object Comments : Screen(ROUTE_COMMENTS) {
+    object Comments : Screen("comments/{feed_post}") {
         private const val ROUTE_FOR_ARGS = "comments"
 
         fun getRouteWithArgs(feedPost: FeedPost): String {
-            val feedPostJson = Gson().toJson(feedPost)
-            return "$ROUTE_FOR_ARGS/${feedPostJson.encode()}"
+            val feedPostJson = Gson().toJson(feedPost).encode()
+            return "comments/$feedPostJson"
         }
     }
 
