@@ -43,6 +43,10 @@ android {
 dependencies {
     implementation(libs.androidx.runtime.livedata)
 
+    //VK SDK
+    implementation(libs.vk.sdk.support)
+    implementation (libs.android.sdk.core)
+    implementation (libs.android.sdk.api)
     //Jetpack Compose Navigation
     implementation(libs.androidx.navigation.compose)
 
