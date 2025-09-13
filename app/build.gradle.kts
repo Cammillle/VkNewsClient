@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -42,11 +43,18 @@ android {
 dependencies {
     implementation(libs.androidx.runtime.livedata)
 
+    //VK SDK
+    //implementation(libs.vk.sdk.support)
+    //implementation (libs.android.sdk.core)
+    //implementation (libs.android.sdk.api)
     //Jetpack Compose Navigation
     implementation(libs.androidx.navigation.compose)
 
     //ViewModelCompose
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    //Gson
+    implementation (libs.gson)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

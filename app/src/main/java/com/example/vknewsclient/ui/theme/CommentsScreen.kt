@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,7 +23,7 @@ import androidx.compose.ui.Modifier
 import com.example.vknewsclient.domain.FeedPost
 import com.example.vknewsclient.domain.PostComment
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,14 +49,14 @@ fun CommentsScreen(
         Scaffold(
             topBar = {
                 TopAppBar(title = {
-                    Text(text = "Comments for FeedPost Id: ${currentState.feedPost.id}")
+                    Text(text = "Comments for FeedPost Id: ${currentState.feedPost.contentText}")
                 }, navigationIcon = {
                     IconButton(
                         onClick = {
                             onBackPressed()
                         }) {
                         Icon(
-                            imageVector = Icons.Filled.ArrowBack, contentDescription = null
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null
                         )
                     }
                 })
@@ -97,11 +96,11 @@ private fun CommentItem(
             )
             Spacer(Modifier.height(4.dp))
             Text(
-                text = "${comment.commentText}", fontSize = 14.sp
+                text = comment.commentText, fontSize = 14.sp
             )
             Spacer(Modifier.height(4.dp))
             Text(
-                text = "${comment.publicationDate}", fontSize = 12.sp
+                text = comment.publicationDate, fontSize = 12.sp
             )
         }
     }

@@ -4,22 +4,32 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.navArgument
 import com.example.vknewsclient.domain.FeedPost
 
+//Вложенный граф навигации
 fun NavGraphBuilder.homeScreenNavGraph(
     newsFeedScreenContent: @Composable () -> Unit,
     commentsScreenContent: @Composable (FeedPost) -> Unit
 ) {
-    navigation(  //Вложенный граф навигации
+    navigation(
         startDestination = Screen.NewsFeed.route,
         route = Screen.Home.route
     ) {
         composable(Screen.NewsFeed.route) {
             newsFeedScreenContent()
         }
-        composable(Screen.Comments.route) { //comments/{feed_post_id}
-            val feedPostId = it.arguments?.getInt("feed_post_id") ?: 0
-            commentsScreenContent(FeedPost(feedPostId))
+        composable(
+            route = Screen.Comments.route,
+            arguments = listOf(
+                navArgument(Screen.KEY_FEED_POST) {
+                    type = FeedPost.NavigationType
+                }
+            )
+        ) {    //comments/{feed_post_id}
+            val feedPost = it.arguments?.getParcelable<FeedPost>(Screen.KEY_FEED_POST)
+                ?: throw RuntimeException("Args is null")
+            commentsScreenContent(feedPost)
         }
     }
 }
