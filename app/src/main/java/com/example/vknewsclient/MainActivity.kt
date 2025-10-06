@@ -5,7 +5,10 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.compose.material3.Scaffold
 import com.example.vknewsclient.ui.theme.MainScreen
+import com.example.vknewsclient.ui.theme.MyNumber
+import com.example.vknewsclient.ui.theme.SideEffectTest
 import com.example.vknewsclient.ui.theme.VkNewsClientTheme
 
 
@@ -13,23 +16,15 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            VkNewsClientTheme {
-//                val launcher = rememberLauncherForActivityResult(
-//                    contract = VK.getVKAuthActivityResultContract(),
-//                    onResult = { result ->
-//                        when (result) {
-//                            is VKAuthenticationResult.Success -> {
-//                                Log.d("MYLOG", "Login success")
-//                            }
-//
-//                            is VKAuthenticationResult.Failed -> {
-//                                Log.d("MYLOG", "Login failed")
-//                            }
-//                        }
-//                    })
-//                launcher.launch(listOf(VKScope.WALL))
-                MainScreen()
+            Scaffold { paddingValues ->
+                VkNewsClientTheme {
+                    SideEffectTest(
+                        paddingValues = paddingValues,
+                        MyNumber(2)
+                    )
+                }
             }
+
         }
     }
 }
