@@ -44,9 +44,9 @@ dependencies {
     implementation(libs.androidx.runtime.livedata)
 
     //VK SDK
-    //implementation(libs.vk.sdk.support)
-    //implementation (libs.android.sdk.core)
-    //implementation (libs.android.sdk.api)
+    implementation ("com.vk:android-sdk-core:4.1.0")
+    implementation ("com.vk:android-sdk-api:4.1.0")
+
     //Jetpack Compose Navigation
     implementation(libs.androidx.navigation.compose)
 
