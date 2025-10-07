@@ -1,4 +1,4 @@
-package com.example.vknewsclient.ui.theme
+package com.example.vknewsclient.presentation.comments
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -30,8 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.vknewsclient.CommentsViewModel
-import com.example.vknewsclient.CommentsViewModelFactory
+import com.example.vknewsclient.ui.theme.VkNewsClientTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
