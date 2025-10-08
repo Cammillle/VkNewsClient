@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
                             LoginScreen(
                                 paddingValues = paddingValues,
                                 onLoginClick = {
-                                    launcher.launch(listOf(VKScope.WALL))
+                                    launcher.launch(listOf(VKScope.WALL, VKScope.FRIENDS))
                                 }
                             )
                         }
