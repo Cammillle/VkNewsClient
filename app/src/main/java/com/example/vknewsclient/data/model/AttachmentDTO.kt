@@ -2,6 +2,6 @@ package com.example.vknewsclient.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class PhotoUrlDTO(
-    @SerializedName("url") val url: String
+data class AttachmentDTO(
+    @SerializedName("photo") val photo: PhotoDTO
 )
