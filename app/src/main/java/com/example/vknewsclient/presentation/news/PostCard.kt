@@ -53,7 +53,7 @@ fun PostCard(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp),
-                painter = painterResource(id = feedPost.contentImageResId),
+                painter = painterResource(id = feedPost.contentImageUrl),
                 contentDescription = null,
                 contentScale = ContentScale.FillWidth
             )
@@ -83,7 +83,7 @@ private fun PostHeader(
             modifier = Modifier
                 .size(50.dp)
                 .clip(CircleShape),
-            painter = painterResource(id = feedPost.avatarResId),
+            painter = painterResource(id = feedPost.communityImageUrl),
             contentDescription = null
         )
         Spacer(modifier = Modifier.width(8.dp))
