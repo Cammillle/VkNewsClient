@@ -5,11 +5,11 @@ import androidx.navigation.NavType
 import androidx.savedstate.SavedState
 import com.google.gson.Gson
 import kotlinx.parcelize.Parcelize
-import kotlin.random.Random
 
 @Parcelize
 data class FeedPost(
-    val id: String,
+    val id: Long,
+    val communityId: Long,
     val communityName: String,
     val publicationDate: String,
     val communityImageUrl: String,
@@ -32,8 +32,6 @@ data class FeedPost(
             override fun parseValue(value: String): FeedPost {
                 return Gson().fromJson(value, FeedPost::class.java)
             }
-
         }
-
     }
 }

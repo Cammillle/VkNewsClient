@@ -11,4 +11,11 @@ interface ApiService {
         @Query("access_token") token: String
     ): NewsFeedResponseDTO
 
+    @GET("likes.add?v=5.199?type=post")
+    suspend fun addLike(
+        @Query("access_token") token: String,
+        @Query("owner_id") ownerId: Long,
+        @Query("item_id") postId: Long
+    )
+
 }
