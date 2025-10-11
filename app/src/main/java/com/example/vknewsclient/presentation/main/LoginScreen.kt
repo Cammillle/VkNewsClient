@@ -1,5 +1,6 @@
 package com.example.vknewsclient.presentation.main
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,12 @@ import androidx.compose.ui.unit.dp
 import com.example.vknewsclient.R
 import com.example.vknewsclient.ui.theme.DarkBlue
 import com.example.vknewsclient.ui.theme.VkNewsClientTheme
+import com.vk.id.onetap.common.OneTapStyle
+import com.vk.id.onetap.common.button.style.OneTapButtonCornersStyle
+import com.vk.id.onetap.common.button.style.OneTapButtonElevationStyle
+import com.vk.id.onetap.common.button.style.OneTapButtonSizeStyle
+import com.vk.id.onetap.compose.onetap.OneTap
+import com.vk.id.onetap.compose.onetap.OneTapTitleScenario
 
 @Composable
 fun LoginScreen(
@@ -48,48 +55,33 @@ fun LoginScreen(
                 contentDescription = null
             )
             Spacer(modifier = Modifier.height(100.dp))
-            Button(
-                onClick = { onLoginClick() },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = DarkBlue,
-                    contentColor = Color.White
-                )
-            ) {
-                Text(text = stringResource(R.string.button_login))
-            }
+//            Button(
+//                onClick = { onLoginClick() },
+//                colors = ButtonDefaults.buttonColors(
+//                    containerColor = DarkBlue,
+//                    contentColor = Color.White
+//                )
+//            ) {
+//                Text(text = stringResource(R.string.button_login))
+//            }
+            //ScreenWithVKIDButton()
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun LoginScreenPreview(
-) {
-    VkNewsClientTheme {
-        Box(
-            modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
-        ) {
-            Column(
-                modifier = Modifier.wrapContentHeight(),
-                //verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    modifier = Modifier.size(100.dp),
-                    painter = painterResource(R.drawable.vk_logo),
-                    contentDescription = null
-                )
-                Spacer(modifier = Modifier.height(100.dp))
-                Button(
-                    onClick = {/*TODO*/ },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = DarkBlue,
-                        contentColor = Color.White
-                    )
-                ) {
-                    Text(text = stringResource(R.string.button_login))
-                }
-            }
-        }
-    }
+fun ScreenWithVKIDButton() {
+    OneTap(
+        onAuth = { oAuth, token ->
+            Log.d("MYTAG", "Token: ${token.token}")
+        },
+        scenario = OneTapTitleScenario.SignUp,
+        signInAnotherAccountButtonEnabled = true,
+        style = OneTapStyle.Light(
+            cornersStyle = OneTapButtonCornersStyle.Custom(2f),
+            sizeStyle = OneTapButtonSizeStyle.SMALL_32,
+            elevationStyle = OneTapButtonElevationStyle.Custom(4f)
+        )
+
+    )
 }

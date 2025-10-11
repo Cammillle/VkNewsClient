@@ -1,5 +1,9 @@
+import java.net.URI
+
 pluginManagement {
     repositories {
+        maven(url = "https://artifactory-external.vkpartner.ru/artifactory/vkid-sdk-android/")
+        maven(url = "https://artifactory-external.vkpartner.ru/artifactory/maven/")
         google {
             content {
                 includeGroupByRegex("com\\.android.*")
@@ -14,6 +18,15 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
+        maven {
+            url = URI("https://artifactory-external.vkpartner.ru/artifactory/vkid-sdk-android/")
+        }
+        maven {
+            url = URI("https://artifactory-external.vkpartner.ru/artifactory/maven/")
+        }
+        maven {
+            url = URI("https://artifactory-external.vkpartner.ru/artifactory/vk-id-captcha/android/")
+        }
         google()
         mavenCentral()
     }

@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("kotlin-parcelize")
+    id("vkid.manifest.placeholders")
+
 }
 
 android {
@@ -46,6 +48,10 @@ dependencies {
     //VK SDK
     implementation ("com.vk:android-sdk-core:4.1.0")
     implementation ("com.vk:android-sdk-api:4.1.0")
+
+    implementation("com.vk.id:vkid:2.5.1")
+    implementation("com.vk.id:onetap-compose:2.5.1")
+
 
     //Jetpack Compose Navigation
     implementation(libs.androidx.navigation.compose)

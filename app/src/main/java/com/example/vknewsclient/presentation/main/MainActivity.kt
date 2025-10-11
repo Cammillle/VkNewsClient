@@ -10,6 +10,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.vknewsclient.ui.theme.VkNewsClientTheme
 import com.vk.api.sdk.VK
 import com.vk.api.sdk.auth.VKScope
+import com.vk.id.VKID
+import com.vk.id.auth.VKIDAuthParams
 
 
 class MainActivity : ComponentActivity() {

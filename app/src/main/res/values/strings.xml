@@ -6,4 +6,11 @@
     <string name="navigation_item_profile">Профиль</string>
     <integer name="com_vk_sdk_AppId">54141289</integer>
     <string name="button_login">Войти</string>
+
+
+    <integer name="clientId">54140439</integer>
+    <string name="clientSecret">OfunRXeJ6vh43d2PnhoW</string>
+
+
+
 </resources>
