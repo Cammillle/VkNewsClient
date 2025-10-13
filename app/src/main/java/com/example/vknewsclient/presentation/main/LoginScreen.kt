@@ -11,20 +11,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.vknewsclient.R
-import com.example.vknewsclient.ui.theme.DarkBlue
-import com.example.vknewsclient.ui.theme.VkNewsClientTheme
+import com.vk.api.sdk.auth.VKScope
+import com.vk.id.VKID
+import com.vk.id.auth.VKIDAuthParams
+import com.vk.id.auth.VKIDAuthUiParams
 import com.vk.id.onetap.common.OneTapStyle
 import com.vk.id.onetap.common.button.style.OneTapButtonCornersStyle
 import com.vk.id.onetap.common.button.style.OneTapButtonElevationStyle
@@ -64,14 +60,30 @@ fun LoginScreen(
 //            ) {
 //                Text(text = stringResource(R.string.button_login))
 //            }
-            //ScreenWithVKIDButton()
+            ScreenWithVKIDButton()
         }
     }
 }
 
 @Composable
 fun ScreenWithVKIDButton() {
+    val authParams = VKIDAuthParams {
+        scopes = setOf(
+            "friends",
+            "wall"
+        )
+    }
+    val authUIParams = VKIDAuthUiParams{
+        scopes = setOf(
+            "groups"
+        )
+
+    }
+
+
+
     OneTap(
+        authParams = authUIParams,
         onAuth = { oAuth, token ->
             Log.d("MYTAG", "Token: ${token.token}")
         },
@@ -82,6 +94,5 @@ fun ScreenWithVKIDButton() {
             sizeStyle = OneTapButtonSizeStyle.SMALL_32,
             elevationStyle = OneTapButtonElevationStyle.Custom(4f)
         )
-
     )
 }
