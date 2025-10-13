@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.vknewsclient.R
+import com.vk.id.VKIDAuthFail
 import com.vk.id.auth.VKIDAuthUiParams
 import com.vk.id.onetap.common.OneTapStyle
 import com.vk.id.onetap.common.button.style.OneTapButtonCornersStyle
@@ -58,7 +59,9 @@ fun ScreenWithVKIDButton() {
 
     val authUIParams = VKIDAuthUiParams {
         scopes = setOf(
-            "groups"
+            "groups",
+            "email",
+            "phone"
         )
 
     }
@@ -67,8 +70,18 @@ fun ScreenWithVKIDButton() {
         onAuth = { oAuth, token ->
             Log.d("MYTAG", "Token: ${token.token}")
         },
+        onFail = { _, fail ->
+            when (fail) {
+                is VKIDAuthFail.Canceled -> TODO()
+                is VKIDAuthFail.FailedApiCall -> TODO()
+                is VKIDAuthFail.FailedOAuthState -> TODO()
+                is VKIDAuthFail.FailedRedirectActivity -> TODO()
+                is VKIDAuthFail.NoBrowserAvailable -> TODO()
+                else -> {}
+            }
+        },
         scenario = OneTapTitleScenario.SignUp,
-        signInAnotherAccountButtonEnabled = true,
+        signInAnotherAccountButtonEnabled = false,
         style = OneTapStyle.Light(
             cornersStyle = OneTapButtonCornersStyle.Custom(2f),
             sizeStyle = OneTapButtonSizeStyle.SMALL_32,
