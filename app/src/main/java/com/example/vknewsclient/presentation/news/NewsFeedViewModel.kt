@@ -19,22 +19,22 @@ class NewsFeedViewModel(application: Application) : AndroidViewModel(application
 
     private val repository = NewsFeedRepository(application)
 
-//    init {
-//        loadPosts()
-//    }
+    init {
+        loadPosts()
+    }
 
-//    private fun loadPosts() {
-//        viewModelScope.launch {
-//            val feedPosts = repository.loadData()
-//            _screenState.value = NewsFeedScreenState.Posts(feedPosts = feedPosts)
-//        }
-//    }
-//
-//    fun updateLikeStatus(feedPost: FeedPost) {
-//        viewModelScope.launch {
-//            repository.addLike(feedPost)
-//        }
-//    }
+    private fun loadPosts() {
+        viewModelScope.launch {
+            val feedPosts = repository.loadData()
+            _screenState.value = NewsFeedScreenState.Posts(feedPosts = feedPosts)
+        }
+    }
+
+    fun updateLikeStatus(feedPost: FeedPost) {
+        viewModelScope.launch {
+            repository.addLike(feedPost)
+        }
+    }
 
     fun updateCount(feedPost: FeedPost, item: StatisticItem) {
         val currentState = screenState.value

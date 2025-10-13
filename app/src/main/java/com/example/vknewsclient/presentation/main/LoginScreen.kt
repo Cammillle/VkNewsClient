@@ -15,11 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.vknewsclient.R
-import com.vk.api.sdk.auth.VKScope
-import com.vk.id.VKID
-import com.vk.id.auth.VKIDAuthParams
 import com.vk.id.auth.VKIDAuthUiParams
 import com.vk.id.onetap.common.OneTapStyle
 import com.vk.id.onetap.common.button.style.OneTapButtonCornersStyle
@@ -30,7 +28,6 @@ import com.vk.id.onetap.compose.onetap.OneTapTitleScenario
 
 @Composable
 fun LoginScreen(
-    onLoginClick: () -> Unit,
     paddingValues: PaddingValues
 ) {
     Box(
@@ -42,7 +39,6 @@ fun LoginScreen(
     ) {
         Column(
             modifier = Modifier.wrapContentHeight(),
-            //verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
@@ -51,37 +47,21 @@ fun LoginScreen(
                 contentDescription = null
             )
             Spacer(modifier = Modifier.height(100.dp))
-//            Button(
-//                onClick = { onLoginClick() },
-//                colors = ButtonDefaults.buttonColors(
-//                    containerColor = DarkBlue,
-//                    contentColor = Color.White
-//                )
-//            ) {
-//                Text(text = stringResource(R.string.button_login))
-//            }
             ScreenWithVKIDButton()
         }
     }
 }
 
+@Preview(showBackground = true)
 @Composable
 fun ScreenWithVKIDButton() {
-    val authParams = VKIDAuthParams {
-        scopes = setOf(
-            "friends",
-            "wall"
-        )
-    }
-    val authUIParams = VKIDAuthUiParams{
+
+    val authUIParams = VKIDAuthUiParams {
         scopes = setOf(
             "groups"
         )
 
     }
-
-
-
     OneTap(
         authParams = authUIParams,
         onAuth = { oAuth, token ->
