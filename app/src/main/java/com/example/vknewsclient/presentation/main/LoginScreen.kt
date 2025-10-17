@@ -61,9 +61,10 @@ fun ScreenWithVKIDButton() {
         scopes = setOf(
             "groups",
             "email",
-            "phone"
+            "phone",
+            "wall",
+            "friends"
         )
-
     }
     OneTap(
         authParams = authUIParams,

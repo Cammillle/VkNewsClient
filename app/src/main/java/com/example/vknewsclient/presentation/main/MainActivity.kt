@@ -19,10 +19,10 @@ class MainActivity : ComponentActivity() {
                     val viewModel: MainViewModel = viewModel()
                     val authState = viewModel.authState.observeAsState(AuthState.Initial)
 
-                    val launcher = rememberLauncherForActivityResult(
-                        onResult = { result ->
-                            viewModel.performAuthResult(result)
-                        })
+//                    val launcher = rememberLauncherForActivityResult(
+//                        onResult = { result ->
+//                            viewModel.performAuthResult(result)
+//                        })
 
                     when (authState.value) {
                         is AuthState.Authorized -> {
@@ -32,13 +32,13 @@ class MainActivity : ComponentActivity() {
                         is AuthState.NotAuthorized -> {
                             LoginScreen(
                                 paddingValues = paddingValues,
-                                onLoginClick = {
-                                    launcher.launch(listOf(VKScope.WALL, VKScope.FRIENDS))
-                                }
+//                                onLoginClick = {
+//                                    launcher.launch(listOf(VKScope.WALL, VKScope.FRIENDS))
+//                                }
                             )
                         }
 
-                        else -> {}
+                        else -> LoginScreen(paddingValues)
                     }
                 }
 
