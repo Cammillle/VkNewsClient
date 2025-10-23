@@ -1,5 +1,6 @@
 package com.example.vknewsclient.data.repository
 
+import android.util.Log
 import com.example.vknewsclient.data.mapper.NewsFeedMapper
 import com.example.vknewsclient.data.network.ApiFactory
 import com.example.vknewsclient.domain.FeedPost
@@ -9,7 +10,6 @@ import com.vk.id.VKID
 
 class NewsFeedRepository() {
     private val token = VKID.instance.accessToken?.token
-
     private val mapper = NewsFeedMapper()
     private val apiService = ApiFactory.apiService
 
@@ -17,11 +17,24 @@ class NewsFeedRepository() {
     val feedPosts: List<FeedPost>
         get() = _feedPosts.toList()
 
+    private var nextFrom: String? = null
+
     suspend fun loadRecommendations(): List<FeedPost> {
-        val response = apiService.loadRecommendations(token = getAccessToken())
+        val startFrom = nextFrom
+
+        if (startFrom == null && feedPosts.isNotEmpty()) return feedPosts
+
+        val response = if (startFrom == null) {
+            apiService.loadRecommendations(token = getAccessToken())
+        } else {
+            apiService.loadRecommendations(token = getAccessToken(), startFrom = startFrom)
+        }
+        nextFrom = response.newsFeedContentDTO.nextFrom
+        Log.d("NewsFeedRepository", token!!)
+
         val posts = mapper.mapResponseToPosts(response)
         _feedPosts.addAll(posts)
-        return mapper.mapResponseToPosts(response)
+        return feedPosts
     }
 
     suspend fun addLike(feedPost: FeedPost) {
@@ -41,7 +54,7 @@ class NewsFeedRepository() {
         _feedPosts[postIndex] = newPost
     }
 
-    suspend fun deleteLike(feedPost: FeedPost){
+    suspend fun deleteLike(feedPost: FeedPost) {
         val response = apiService.deleteLike(
             token = getAccessToken(),
             type = "post",

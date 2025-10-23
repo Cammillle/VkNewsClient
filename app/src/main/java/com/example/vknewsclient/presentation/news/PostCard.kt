@@ -58,7 +58,8 @@ fun PostCard(
                     .fillMaxWidth()
                     .wrapContentHeight(),
                 contentDescription = null,
-                contentScale = ContentScale.FillWidth
+                contentScale = ContentScale.FillWidth,
+
             )
             Spacer(modifier = Modifier.height(8.dp))
             Statistics(
@@ -67,7 +68,7 @@ fun PostCard(
                 onShareClickListener = onShareClickListener,
                 onViewsClickListener = onViewsClickListener,
                 onCommentClickListener = onCommentClickListener,
-                isFavourite = feedPost.isLiked
+                isLiked = feedPost.isLiked
             )
         }
     }
@@ -79,8 +80,7 @@ private fun PostHeader(
 ) {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp),
+            .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically
     ) {
         AsyncImage(
@@ -119,7 +119,7 @@ private fun Statistics(
     onShareClickListener: (StatisticItem) -> Unit,
     onViewsClickListener: (StatisticItem) -> Unit,
     onCommentClickListener: (StatisticItem) -> Unit,
-    isFavourite: Boolean
+    isLiked: Boolean
 ) {
     Row {
         Row(
@@ -153,12 +153,12 @@ private fun Statistics(
             )
             val likesItem = statistics.getItemByType(StatisticType.LIKES)
             IconWithText(
-                iconResId = if (isFavourite) R.drawable.ic_like_set else R.drawable.ic_like,
+                iconResId = if (isLiked) R.drawable.ic_like_set else R.drawable.ic_like,
                 text = formatStatisticCount(likesItem.count),
                 onItemClickListener = {
                     onLikeClickListener(likesItem)
                 },
-                tint = if (isFavourite) DarkRed else MaterialTheme.colorScheme.secondary
+                tint = if (isLiked) DarkRed else MaterialTheme.colorScheme.secondary
             )
         }
     }
@@ -197,7 +197,7 @@ private fun IconWithText(
             painter = painterResource(iconResId),
             contentDescription = null
         )
-        Spacer(modifier = Modifier.width(4.dp))
+        Spacer(modifier = Modifier.width(6.dp))
         Text(text = text)
     }
 }

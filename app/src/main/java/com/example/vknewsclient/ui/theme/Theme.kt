@@ -1,6 +1,5 @@
 package com.example.vknewsclient.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -23,13 +22,17 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
+//    primary = Color.White,
+//    secondary = Color.White,
+//    onPrimary = Black900,
+//    onSecondary = Black500,
+    background = Color.White,
+    surface = Color.White,
+    onBackground = Color(0xFF1C1B1F),
     primary = Color.White,
     secondary = Color.White,
     onPrimary = Black900,
-    onSecondary = Black500,
-    background = Color.White,
-    surface = Color.White,
-    onBackground = Color(0xFF1C1B1F)
+    onSecondary = Black500
 )
 
 @Composable

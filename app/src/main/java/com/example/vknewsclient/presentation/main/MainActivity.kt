@@ -1,7 +1,6 @@
 package com.example.vknewsclient.presentation.main
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.Scaffold
@@ -18,13 +17,9 @@ class MainActivity : ComponentActivity() {
                 val viewModel: MainViewModel = viewModel()
                 val authState = viewModel.authState.observeAsState(AuthState.Initial)
 
-                //val authState by viewModel.authStateFlow.collectAsStateWithLifecycle(AuthState.Initial)
-                Log.d("MainActivityTag", "AuthState changed to: ${authState.value}")
-
                 Scaffold { paddingValues ->
                     when (authState.value) {
                         is AuthState.Authorized -> {
-                            Log.d("MainActivityTag", "MainScreen")
                             MainScreen()
                         }
 
@@ -35,10 +30,7 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        else -> LoginScreen(
-                            paddingValues,
-                            viewModel
-                        )
+                        else -> {}
                     }
                 }
 
