@@ -1,5 +1,6 @@
 package com.example.vknewsclient.presentation.main
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -24,44 +25,46 @@ import com.example.vknewsclient.presentation.news.NewsFeedScreen
 @Composable
 fun MainScreen() {
     val navigationState = rememberNavigationState()
+    val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
+    Log.d("MainScreen","$navBackStackEntry")
 
     Scaffold(
         bottomBar = {
-            NavigationBar {
-                val navBackStackEntry by navigationState.navHostController.currentBackStackEntryAsState()
-
-                val items = listOf(
-                    NavigationItem.Home,
-                    NavigationItem.Favourite,
-                    NavigationItem.Profile
-                )
-                items.forEach { item ->
-
-                    val selected = navBackStackEntry?.destination?.hierarchy?.any{
-                        it.route == item.screen.route
-                    } ?: false
-
-                    NavigationBarItem(
-                        selected = selected,
-                        onClick = {
-                            if(!selected){
-                                navigationState.navigateTo(item.screen.route)
-                            }
-                        },
-                        icon = { Icon(item.icon, contentDescription = null) },
-                        label = { Text(text = stringResource(item.titleResId)) },
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = MaterialTheme.colorScheme.onBackground,
-                            selectedTextColor = MaterialTheme.colorScheme.onBackground
-                        )
+            if(navBackStackEntry!=null){
+                NavigationBar {
+                    val items = listOf(
+                        NavigationItem.Home,
+                        NavigationItem.Favourite,
+                        NavigationItem.Profile
                     )
+                    items.forEach { item ->
+
+                        val selected = navBackStackEntry?.destination?.hierarchy?.any{
+                            it.route == item.screen.route
+                        } ?: false
+
+                        NavigationBarItem(
+                            selected = selected,
+                            onClick = {
+                                if(!selected){
+                                    navigationState.navigateTo(item.screen.route)
+                                }
+                            },
+                            icon = { Icon(item.icon, contentDescription = null) },
+                            label = { Text(text = stringResource(item.titleResId)) },
+                            colors = NavigationBarItemDefaults.colors(
+                                selectedIconColor = MaterialTheme.colorScheme.onBackground,
+                                selectedTextColor = MaterialTheme.colorScheme.onBackground
+                            )
+                        )
+                    }
                 }
             }
+
         }) { paddingValues ->
 
         AppNavGraph(
             navHostController = navigationState.navHostController,
-
             newsFeedScreenContent = {
                 NewsFeedScreen(
                     paddingValues = paddingValues,
@@ -88,6 +91,7 @@ fun MainScreen() {
                 TextCounter("Profile", paddingValues)
             }
         )
+        Log.d("MainScreen","${navigationState.navHostController}")
     }
 }
 

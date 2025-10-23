@@ -1,8 +1,8 @@
 package com.example.vknewsclient.presentation.main
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.livedata.observeAsState
@@ -15,30 +15,30 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             VkNewsClientTheme {
+                val viewModel: MainViewModel = viewModel()
+                val authState = viewModel.authState.observeAsState(AuthState.Initial)
+
+                //val authState by viewModel.authStateFlow.collectAsStateWithLifecycle(AuthState.Initial)
+                Log.d("MainActivityTag", "AuthState changed to: ${authState.value}")
+
                 Scaffold { paddingValues ->
-                    val viewModel: MainViewModel = viewModel()
-                    val authState = viewModel.authState.observeAsState(AuthState.Initial)
-
-//                    val launcher = rememberLauncherForActivityResult(
-//                        onResult = { result ->
-//                            viewModel.performAuthResult(result)
-//                        })
-
                     when (authState.value) {
                         is AuthState.Authorized -> {
+                            Log.d("MainActivityTag", "MainScreen")
                             MainScreen()
                         }
 
                         is AuthState.NotAuthorized -> {
                             LoginScreen(
                                 paddingValues = paddingValues,
-//                                onLoginClick = {
-//                                    launcher.launch(listOf(VKScope.WALL, VKScope.FRIENDS))
-//                                }
+                                viewModel
                             )
                         }
 
-                        else -> LoginScreen(paddingValues)
+                        else -> LoginScreen(
+                            paddingValues,
+                            viewModel
+                        )
                     }
                 }
 

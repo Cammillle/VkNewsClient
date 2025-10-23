@@ -1,6 +1,7 @@
 package com.example.vknewsclient.presentation.news
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,17 +18,21 @@ class NewsFeedViewModel(application: Application) : AndroidViewModel(application
     private val _screenState = MutableLiveData<NewsFeedScreenState>(initialState)
     val screenState: LiveData<NewsFeedScreenState> = _screenState
 
-    private val repository = NewsFeedRepository(application)
+    private val repository = NewsFeedRepository()
 
     init {
         loadPosts()
     }
 
     private fun loadPosts() {
+        Log.d("NewsFeedViewModel", "loadPosts")
         viewModelScope.launch {
+            Log.d("NewsFeedViewModel", "launch")
             val feedPosts = repository.loadData()
             _screenState.value = NewsFeedScreenState.Posts(feedPosts = feedPosts)
+            Log.d("NewsFeedViewModel", "$feedPosts")
         }
+
     }
 
     fun updateLikeStatus(feedPost: FeedPost) {

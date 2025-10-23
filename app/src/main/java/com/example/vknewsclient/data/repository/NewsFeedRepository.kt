@@ -1,18 +1,19 @@
 package com.example.vknewsclient.data.repository
 
-import android.app.Application
+import android.util.Log
 import com.example.vknewsclient.data.mapper.NewsFeedMapper
 import com.example.vknewsclient.data.network.ApiFactory
 import com.example.vknewsclient.domain.FeedPost
 import com.vk.id.VKID
 
-class NewsFeedRepository(application: Application) {
-    private val token = VKID.instance.accessToken
+class NewsFeedRepository() {
+    private val token = VKID.instance.accessToken?.token
 
     private val mapper = NewsFeedMapper()
     private val apiService = ApiFactory.apiService
 
     suspend fun loadData(): List<FeedPost> {
+        Log.d("NewsFeedRepository","load data")
         val response = apiService.get(token = getAccessToken())
         return mapper.mapResponseToPost(response)
     }

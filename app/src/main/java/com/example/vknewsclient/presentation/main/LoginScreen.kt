@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.vknewsclient.R
 import com.vk.id.VKIDAuthFail
@@ -29,7 +28,8 @@ import com.vk.id.onetap.compose.onetap.OneTapTitleScenario
 
 @Composable
 fun LoginScreen(
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
+    viewModel: MainViewModel
 ) {
     Box(
         modifier = Modifier
@@ -48,40 +48,36 @@ fun LoginScreen(
                 contentDescription = null
             )
             Spacer(modifier = Modifier.height(100.dp))
-            ScreenWithVKIDButton()
+            ScreenWithVKIDButton(viewModel)
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun ScreenWithVKIDButton() {
+fun ScreenWithVKIDButton(
+    viewModel: MainViewModel
+) {
 
-    val authUIParams = VKIDAuthUiParams {
-        scopes = setOf(
-            "groups",
-            "email",
-            "phone",
-            "wall",
-            "friends"
-        )
-    }
     OneTap(
-        authParams = authUIParams,
+        authParams = VKIDAuthUiParams{
+            scopes = setOf("wall","friends")
+        },
         onAuth = { oAuth, token ->
-            Log.d("MYTAG", "Token: ${token.token}")
+            //Log.d("MYTAG", "Token scopes: ${token.scopes}")
+            //Log.d("MYTAG", "Token: ${token.token}")
+            viewModel.performAuthResult(token)
         },
         onFail = { _, fail ->
             when (fail) {
-                is VKIDAuthFail.Canceled -> TODO()
-                is VKIDAuthFail.FailedApiCall -> TODO()
-                is VKIDAuthFail.FailedOAuthState -> TODO()
-                is VKIDAuthFail.FailedRedirectActivity -> TODO()
-                is VKIDAuthFail.NoBrowserAvailable -> TODO()
+                is VKIDAuthFail.Canceled -> Log.d("MYTAG", "No Browser")
+                is VKIDAuthFail.FailedApiCall -> Log.d("MYTAG", "No Browser")
+                is VKIDAuthFail.FailedOAuthState -> Log.d("MYTAG", "No Browser")
+                is VKIDAuthFail.FailedRedirectActivity -> Log.d("MYTAG", "No Browser")
+                is VKIDAuthFail.NoBrowserAvailable -> Log.d("MYTAG", "No Browser")
                 else -> {}
             }
         },
-        scenario = OneTapTitleScenario.SignUp,
+        scenario = OneTapTitleScenario.SignIn,
         signInAnotherAccountButtonEnabled = false,
         style = OneTapStyle.Light(
             cornersStyle = OneTapButtonCornersStyle.Custom(2f),
@@ -89,4 +85,5 @@ fun ScreenWithVKIDButton() {
             elevationStyle = OneTapButtonElevationStyle.Custom(4f)
         )
     )
+
 }

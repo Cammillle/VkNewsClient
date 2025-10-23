@@ -1,5 +1,6 @@
 package com.example.vknewsclient.presentation.news
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -21,7 +22,10 @@ fun NewsFeedScreen(
     onCommentClickListener: (FeedPost) -> Unit
 ) {
     val viewModel: NewsFeedViewModel = viewModel()
-    val screenState = viewModel.screenState.observeAsState(NewsFeedScreenState.Initial)
+    val screenState = viewModel.screenState.observeAsState()
+
+    Log.d("NewsFeedScreen","${screenState.value}")
+    Log.d("NewsFeedScreen","${screenState.value}")
 
     when (val currentState = screenState.value) {
         is NewsFeedScreenState.Posts -> {
@@ -32,8 +36,8 @@ fun NewsFeedScreen(
                 onCommentClickListener = onCommentClickListener
             )
         }
-
         NewsFeedScreenState.Initial -> {}
+        else -> {}
     }
 }
 
