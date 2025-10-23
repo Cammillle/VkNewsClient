@@ -11,7 +11,7 @@ import kotlin.math.absoluteValue
 
 class NewsFeedMapper {
 
-    fun mapResponseToPost(responseDTO: NewsFeedResponseDTO): List<FeedPost> {
+    fun mapResponseToPosts(responseDTO: NewsFeedResponseDTO): List<FeedPost> {
         val result = mutableListOf<FeedPost>()
         val posts = responseDTO.newsFeedContentDTO.posts
         val groups = responseDTO.newsFeedContentDTO.groups
@@ -33,7 +33,7 @@ class NewsFeedMapper {
                     StatisticItem(type = StatisticType.COMMENTS, count = post.comments?.count ?: 0),
                     StatisticItem(type = StatisticType.SHARES, count = post.reposts?.count ?: 0)
                 ),
-                isFavourite = post.isFavourite
+                isLiked = post.likes.userLikes > 0
             )
             result.add(feedPost)
         }

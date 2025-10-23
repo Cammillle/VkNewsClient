@@ -1,6 +1,5 @@
 package com.example.vknewsclient.presentation.news
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -24,18 +23,16 @@ fun NewsFeedScreen(
     val viewModel: NewsFeedViewModel = viewModel()
     val screenState = viewModel.screenState.observeAsState()
 
-    Log.d("NewsFeedScreen","${screenState.value}")
-    Log.d("NewsFeedScreen","${screenState.value}")
-
     when (val currentState = screenState.value) {
         is NewsFeedScreenState.Posts -> {
             FeedPosts(
                 paddingValues = paddingValues,
                 viewModel = viewModel,
-                posts = currentState.feedPosts,
+                posts = currentState.posts,
                 onCommentClickListener = onCommentClickListener
             )
         }
+
         NewsFeedScreenState.Initial -> {}
         else -> {}
     }
@@ -79,7 +76,7 @@ private fun FeedPosts(
                         onCommentClickListener(feedPost)
                     },
                     onLikeClickListener = { _ ->
-                        //viewModel.updateLikeStatus(feedPost)
+                        viewModel.changeLikeStatus(feedPost)
                     },
                     onShareClickListener = { statisticItem ->
                         viewModel.updateCount(feedPost, statisticItem)

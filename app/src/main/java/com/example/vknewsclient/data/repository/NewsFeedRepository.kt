@@ -1,9 +1,10 @@
 package com.example.vknewsclient.data.repository
 
-import android.util.Log
 import com.example.vknewsclient.data.mapper.NewsFeedMapper
 import com.example.vknewsclient.data.network.ApiFactory
 import com.example.vknewsclient.domain.FeedPost
+import com.example.vknewsclient.domain.StatisticItem
+import com.example.vknewsclient.domain.StatisticType
 import com.vk.id.VKID
 
 class NewsFeedRepository() {
@@ -12,21 +13,52 @@ class NewsFeedRepository() {
     private val mapper = NewsFeedMapper()
     private val apiService = ApiFactory.apiService
 
-    suspend fun loadData(): List<FeedPost> {
-        Log.d("NewsFeedRepository","load data")
-        val response = apiService.get(token = getAccessToken())
-        return mapper.mapResponseToPost(response)
+    private val _feedPosts = mutableListOf<FeedPost>()
+    val feedPosts: List<FeedPost>
+        get() = _feedPosts.toList()
+
+    suspend fun loadRecommendations(): List<FeedPost> {
+        val response = apiService.loadRecommendations(token = getAccessToken())
+        val posts = mapper.mapResponseToPosts(response)
+        _feedPosts.addAll(posts)
+        return mapper.mapResponseToPosts(response)
     }
 
     suspend fun addLike(feedPost: FeedPost) {
-        apiService.addLike(
+        val response = apiService.addLike(
             token = getAccessToken(),
+            type = "post",
             ownerId = feedPost.communityId,
             postId = feedPost.id
         )
+        val newLikesCount = response.likes.count
+        val newStatistics = feedPost.statistics.toMutableList().apply {
+            removeIf { it.type == StatisticType.LIKES }
+            add(StatisticItem(type = StatisticType.LIKES, count = newLikesCount))
+        }
+        val newPost = feedPost.copy(statistics = newStatistics, isLiked = true)
+        val postIndex = _feedPosts.indexOf(feedPost)
+        _feedPosts[postIndex] = newPost
+    }
+
+    suspend fun deleteLike(feedPost: FeedPost){
+        val response = apiService.deleteLike(
+            token = getAccessToken(),
+            type = "post",
+            ownerId = feedPost.communityId,
+            postId = feedPost.id
+        )
+        val newLikesCount = response.likes.count
+        val newStatistics = feedPost.statistics.toMutableList().apply {
+            removeIf { it.type == StatisticType.LIKES }
+            add(StatisticItem(type = StatisticType.LIKES, count = newLikesCount))
+        }
+        val newPost = feedPost.copy(statistics = newStatistics, isLiked = false)
+        val postIndex = _feedPosts.indexOf(feedPost)
+        _feedPosts[postIndex] = newPost
     }
 
     private fun getAccessToken(): String {
-        return token?.toString() ?: throw IllegalStateException("Token is null")
+        return token ?: throw IllegalStateException("Token is null")
     }
 }
