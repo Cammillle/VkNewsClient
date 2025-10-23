@@ -18,6 +18,14 @@ interface ApiService {
         @Query("start_from") startFrom: String
     ): NewsFeedResponseDTO
 
+    @GET("newsfeed.ignoreItem?v=5.199")
+    suspend fun ignorePost(
+        @Query("access_token") token: String,
+        @Query("type") type: String = "wall",
+        @Query("owner_id") ownerId: Long,
+        @Query("item_id") postId: Long
+    )
+
     @GET("likes.add?v=5.199?type=post")
     suspend fun addLike(
         @Query("access_token") token: String,

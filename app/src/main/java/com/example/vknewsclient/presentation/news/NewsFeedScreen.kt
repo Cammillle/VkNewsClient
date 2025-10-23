@@ -3,6 +3,7 @@ package com.example.vknewsclient.presentation.news
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -28,7 +29,7 @@ fun NewsFeedScreen(
     onCommentClickListener: (FeedPost) -> Unit
 ) {
     val viewModel: NewsFeedViewModel = viewModel()
-    val screenState = viewModel.screenState.observeAsState()
+    val screenState = viewModel.screenState.observeAsState(NewsFeedScreenState.Initial)
 
     when (val currentState = screenState.value) {
         is NewsFeedScreenState.Posts -> {
@@ -42,7 +43,14 @@ fun NewsFeedScreen(
         }
 
         NewsFeedScreenState.Initial -> {}
-        else -> {}
+
+        NewsFeedScreenState.Loading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(color = DarkBlue)
+            }
+        }
     }
 }
 
@@ -65,7 +73,8 @@ private fun FeedPosts(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(
-            items = posts
+            items = posts,
+            key = { it.id }
         ) { feedPost ->
             val swipeToDismissBoxState = rememberSwipeToDismissBoxState(
                 confirmValueChange = {
@@ -85,12 +94,6 @@ private fun FeedPosts(
                     },
                     onLikeClickListener = { _ ->
                         viewModel.changeLikeStatus(feedPost)
-                    },
-                    onShareClickListener = { statisticItem ->
-                        viewModel.updateCount(feedPost, statisticItem)
-                    },
-                    onViewsClickListener = { statisticItem ->
-                        viewModel.updateCount(feedPost, statisticItem)
                     })
             }
         }
@@ -105,7 +108,7 @@ private fun FeedPosts(
                 ) {
                     CircularProgressIndicator(color = DarkBlue)
                 }
-            }else{
+            } else {
                 SideEffect {
                     viewModel.loadNextRecommendations()
                 }
