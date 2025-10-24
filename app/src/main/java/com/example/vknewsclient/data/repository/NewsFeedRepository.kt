@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.vknewsclient.data.mapper.NewsFeedMapper
 import com.example.vknewsclient.data.network.ApiFactory
 import com.example.vknewsclient.domain.FeedPost
+import com.example.vknewsclient.domain.PostComment
 import com.example.vknewsclient.domain.StatisticItem
 import com.example.vknewsclient.domain.StatisticType
 import com.vk.id.VKID
@@ -35,6 +36,16 @@ class NewsFeedRepository() {
         val posts = mapper.mapResponseToPosts(response)
         _feedPosts.addAll(posts)
         return feedPosts
+    }
+
+    suspend fun getComments(feedPost: FeedPost): List<PostComment> {
+        val response = apiService.getComments(
+            getAccessToken(),
+            ownerId = feedPost.communityId,
+            postId = feedPost.id
+        )
+        val comments = mapper.mapResponseToComments(response)
+        return comments
     }
 
     suspend fun ignorePost(feedPost: FeedPost) {

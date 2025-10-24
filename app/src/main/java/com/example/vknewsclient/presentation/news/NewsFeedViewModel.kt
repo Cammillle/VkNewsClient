@@ -39,6 +39,12 @@ class NewsFeedViewModel(application: Application) : AndroidViewModel(application
         loadRecommendations()
     }
 
+    fun getComments(feedPost: FeedPost) {
+        viewModelScope.launch {
+            repository.getComments(feedPost)
+        }
+    }
+
     fun changeLikeStatus(feedPost: FeedPost) {
         viewModelScope.launch {
             if (feedPost.isLiked) {

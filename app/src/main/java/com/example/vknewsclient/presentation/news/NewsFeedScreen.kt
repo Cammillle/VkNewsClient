@@ -90,6 +90,7 @@ private fun FeedPosts(
                     modifier = Modifier.padding(8.dp),
                     feedPost = feedPost,
                     onCommentClickListener = {
+                        viewModel.getComments(feedPost)
                         onCommentClickListener(feedPost)
                     },
                     onLikeClickListener = { _ ->

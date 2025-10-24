@@ -57,7 +57,6 @@ fun LoginScreen(
 fun ScreenWithVKIDButton(
     viewModel: MainViewModel
 ) {
-
     OneTap(
         authParams = VKIDAuthUiParams{
             scopes = setOf("wall","friends")

@@ -9,7 +9,7 @@
 
     <integer name="clientId">54140439</integer>
     <string name="clientSecret">OfunRXeJ6vh43d2PnhoW</string>
-
+    <string name="comments_text">Комментарии</string>
 
 
 </resources>
